@@ -1,0 +1,27 @@
+---
+- name: download bootstrap.py from {{ satellite_bootstrap_fqdn }}
+  get_url:
+    dest: "{{ bootstrap_target_path }}"
+    url: "{{ satellite_bootstrap_download_method }}://{{ satellite_bootstrap_fqdn }}/pub/bootstrap.py"
+  when: not bootstrap_local_copy
+
+- name: copy bootstrap.py from local machine
+  copy:
+    dest: "{{ satellite_bootstrap_target_path }}"
+    src: bootstrap.py
+  when: satellite_bootstrap_local_copy
+
+- name: generate bootstrap.py register arguments
+  set_fact:
+    bootstrap_args: "--server {{ satellite_bootstrap_fqdn }} --organization '{{ satellite_bootstrap_org }}' --location '{{ satellite_bootstrap_location }}' --activationkey '{{ satellite_bootstrap_activationkey }}' --download-method {{ satellite_bootstrap_download_method }}"
+    bootstrap_foreman_args: "{% if satellite_bootstrap_password != '' %}--login '{{ satellite_bootstrap_username }}' --password '{{ satellite_bootstrap_password }}' --hostgroup '{{ satellite_bootstrap_hostgroup }}'{% else %}--skip foreman{% endif %}"
+  when: satellite_bootstrap_state == present
+
+- name: generate bootstrap.py unregister arguments
+  set_fact:
+    bootstrap_args: "--server {{ satellite_bootstrap_fqdn }}"
+    bootstrap_foreman_args: "--login '{{ satellite_bootstrap_username }}' --password '{{ satellite_bootstrap_password }}' --remove"
+  when: satellite_bootstrap_state == absent
+
+- name: run bootstrap.py
+  command: "python {{ satellite_bootstrap_target_path }} {{ bootstrap_args }} {{ bootstrap_foreman_args }} {{ satellite_bootstrap_additional_args }}"
