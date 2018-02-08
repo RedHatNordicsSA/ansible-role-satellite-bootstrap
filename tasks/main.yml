@@ -1,9 +1,9 @@
 ---
 - name: download bootstrap.py from "{{ satellite_bootstrap_fqdn }}"
   get_url:
-    dest: "{{ bootstrap_target_path }}"
+    dest: "{{ satellite_bootstrap_target_path }}"
     url: "{{ satellite_bootstrap_download_method + '://' + satellite_bootstrap_fqdn + '/pub/bootstrap.py' }}"
-  when: not bootstrap_local_copy
+  when: not satellite_bootstrap_local_copy
 
 - name: copy bootstrap.py from local machine
   copy:
