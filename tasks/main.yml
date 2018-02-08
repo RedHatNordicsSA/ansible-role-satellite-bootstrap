@@ -1,5 +1,5 @@
 ---
-- name: download bootstrap.py from {{ satellite_bootstrap_fqdn }}
+- name: download bootstrap.py from "{{ satellite_bootstrap_fqdn }}"
   get_url:
     dest: "{{ bootstrap_target_path }}"
     url: "{{ satellite_bootstrap_download_method }}://{{ satellite_bootstrap_fqdn }}/pub/bootstrap.py"
