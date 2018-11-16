@@ -7,7 +7,7 @@ satellite_bootstrap_activationkey: "some-activationkey"
 satellite_bootstrap_username: "admin"
 satellite_bootstrap_password: "secret"
 satellite_bootstrap_hostgroup: "SOME/HOSTGROUP"
-satellite_bootstrap_additional_args: "--force"
+satellite_bootstrap_additional_args: "--unmanaged --skip puppet --force"
 satellite_bootstrap_target_path: /root/bootstrap.py
 satellite_bootstrap_local_copy: False
 # register or unregister, valid values are present or absent
