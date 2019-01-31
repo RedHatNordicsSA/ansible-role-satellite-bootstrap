@@ -38,4 +38,5 @@ BSD
 Author Information
 ------------------
 
+Peter Gustafsson, pgustafs@redhat.com
 [Red Hat](https://redhatnordicssa.github.io/)
