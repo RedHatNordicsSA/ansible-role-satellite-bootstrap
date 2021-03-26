@@ -23,5 +23,16 @@
     bootstrap_foreman_args: "--login '{{ satellite_bootstrap_username }}' --password '{{ satellite_bootstrap_password }}' --remove"
   when: satellite_bootstrap_state == "absent"
 
+- name: set python
+  set_fact:
+    python: python
+
+- name: set python on rhel8 to platform one, full python is missing by default
+  set_fact:
+    python: /usr/libexec/platform-python
+  when:
+    - ansible_distribution == 'RedHat'
+    - ansible_distribution_major_version is version('7', '>')
+
 - name: run bootstrap.py
-  command: "python {{ satellite_bootstrap_target_path }} {{ bootstrap_args }} {{ bootstrap_foreman_args }} {{ satellite_bootstrap_additional_args }}"
+  command: "{{ python }} {{ satellite_bootstrap_target_path }} {{ bootstrap_args }} {{ bootstrap_foreman_args }} {{ satellite_bootstrap_additional_args }}"
